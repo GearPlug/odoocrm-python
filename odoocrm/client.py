@@ -36,7 +36,7 @@ class Client(object):
         it will fetch all the fields the current user can read, which tends to be a huge amount.
 
         Args:
-            query: ['1', '2']
+            query: [1, 2]
             params: {'fields': ['name', 'country_id', 'comment']}
 
         Returns: A dict.

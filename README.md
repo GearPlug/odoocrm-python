@@ -21,7 +21,7 @@ url = client.search_partner([[['is_company', '=', True], ['customer', '=', True]
 
 Read partner
 ```
-url = client.read_partner(['1', '2'], {'fields': ['name', 'country_id', 'comment']})
+url = client.read_partner([1, 2], {'fields': ['name', 'country_id', 'comment']})
 ```
 
 ## Requirements

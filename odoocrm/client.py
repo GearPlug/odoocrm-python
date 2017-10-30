@@ -58,3 +58,15 @@ class Client(object):
         response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'fields_get', [],
                                           {'attributes': ['string', 'help', 'type']})
         return response
+
+    def create_partner(self, data):
+        """The method will create a single record and return its database identifier
+        .create() takes a mapping of fields to values, used to initialize the record.
+        For any field which has a default value and is not set through the mapping argument,
+        the default value will be used.
+
+        Returns:
+
+        """
+        response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'create', data)
+        return response

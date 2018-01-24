@@ -1,5 +1,6 @@
 from xmlrpc import client
 from odoocrm.exceptions import AuthenticationError
+import re
 
 
 class Client(object):
@@ -45,15 +46,22 @@ class Client(object):
         response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'read', query, params)
         clean_response = []
         for item in response:
-            if isinstance(item, dict):
-                for k, v in item:
-                    if isinstance(v, list):
-                        if len(v) > 0:
-                            v = v[-1]
-                        else:
-                            v = ''
-                    clean_response.append({k: v})
-        return clean_response
+            for k, v in item.items():
+                if isinstance(v, list):
+                    for obj in v:
+                        if isinstance(obj, int) or isinstance(obj, float):
+                            v.remove(obj)
+                clean_response.append({k: v})
+        result = [{k: self.clean_string(v) for k, v in item.items()} for item in clean_response]
+        return result
+
+    def clean_string(self, string):
+        if type(string) != str:
+            return string
+        return self.strip_string_extra_spaces(string).strip()
+
+    def strip_string_extra_spaces(self, string):
+        return re.sub("(?:\s)+", ' ', string)
 
     def list_fields_partner(self):
         """Inspects a model's fields and check which ones seem to be of interest.

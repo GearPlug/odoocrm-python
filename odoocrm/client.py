@@ -43,7 +43,17 @@ class Client(object):
 
         """
         response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'read', query, params)
-        return response
+        clean_response = []
+        for item in response:
+            if isinstance(item, dict):
+                for k, v in item:
+                    if isinstance(v, list):
+                        if len(v) > 0:
+                            v = v[-1]
+                        else:
+                            v = ''
+                    clean_response.append({k: v})
+        return clean_response
 
     def list_fields_partner(self):
         """Inspects a model's fields and check which ones seem to be of interest.

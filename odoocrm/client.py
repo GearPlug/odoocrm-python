@@ -44,14 +44,14 @@ class Client(object):
 
         """
         response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'read', query, params)
-        clean_response = []
+        clean_response = {}
         for item in response:
             for k, v in item.items():
                 if isinstance(v, list):
                     for obj in v:
                         if isinstance(obj, int) or isinstance(obj, float):
                             v.remove(obj)
-                clean_response.append({k: v})
+                clean_response.update({k: v})
         result = [{k: self.clean_string(v) for k, v in item.items()} for item in clean_response]
         return result
 

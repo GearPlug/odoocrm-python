@@ -52,7 +52,7 @@ class Client(object):
                         if isinstance(obj, int) or isinstance(obj, float):
                             v.remove(obj)
                 clean_response.update({k: v})
-        result = [{k: self.clean_string(v) for k, v in item.items()} for item in clean_response]
+        result = [{k: self.clean_string(v) for k, v in clean_response.items()}]
         return result
 
     def clean_string(self, string):

@@ -44,15 +44,15 @@ class Client(object):
 
         """
         response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'read', query, params)
-        clean_response = []
+        clean_response = {}
         for item in response:
             for k, v in item.items():
                 if isinstance(v, list):
                     for obj in v:
                         if isinstance(obj, int) or isinstance(obj, float):
                             v.remove(obj)
-                clean_response.append({k: v})
-        result = [{k: self.clean_string(v) for k, v in item.items()} for item in clean_response]
+                clean_response.update({k: self.clean_string(v)})
+        result = clean_response
         return result
 
     def clean_string(self, string):
@@ -64,14 +64,14 @@ class Client(object):
         return re.sub("(?:\s)+", ' ', string)
 
     def list_fields_partner(self):
-        """Inspects a model's fields and check which ones seem to be of interest.
+        """
+            Inspects a model's fields and check which ones seem to be of interest.
         Because it returns a large amount of meta-information (it is also used by client programs)
         it should be filtered before printing, the most interesting items for a human user are string
         (the field's label), help (a help text if available) and type (to know which values to expect,
         or to send when updating a record)
 
         Returns: A dict.
-
         """
         response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'fields_get', [],
                                           {'attributes': ['string', 'help', 'type']})

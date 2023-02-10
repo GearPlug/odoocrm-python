@@ -34,6 +34,20 @@ class Client(object):
         )
         return response
 
+    def search_read_partner(self, query, params={}):
+        """Takes a mandatory domain filter (possibly empty), and returns the database
+        identifiers of all records matching the filter.
+
+        Args:
+            query: [[['is_company', '=', True], ['customer', '=', True]]], [[]]
+            params: {'offset': 10, 'limit': 5, 'order': 'id asc', 'fields': ['name', 'country_id', 'comment']}
+
+        Returns: A dict.
+        """
+        return self.models.execute_kw(
+            self.database, self.uid, self.password, "res.partner", "search_read", query, params
+        )
+
     def read_partner(self, query, params={}):
         """Takes a list of ids and optionally a list of fields to fetch. By default,
         it will fetch all the fields the current user can read, which tends to be a huge amount.

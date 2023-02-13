@@ -10,13 +10,13 @@ class Client(object):
         self.username = username
         self.password = password
 
-        self.common = client.ServerProxy('{}/xmlrpc/2/common'.format(url))
+        self.common = client.ServerProxy("{}/xmlrpc/2/common".format(url))
         uid = self.common.authenticate(database, username, password, {})
         if uid is False:
             raise AuthenticationError
         self.uid = uid
 
-        self.models = client.ServerProxy('{}/xmlrpc/2/object'.format(self.url))
+        self.models = client.ServerProxy("{}/xmlrpc/2/object".format(self.url))
 
     def search_partner(self, query, params={}):
         """Takes a mandatory domain filter (possibly empty), and returns the database
@@ -29,8 +29,24 @@ class Client(object):
         Returns: A dict.
 
         """
-        response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'search', query, params)
+        response = self.models.execute_kw(
+            self.database, self.uid, self.password, "res.partner", "search", query, params
+        )
         return response
+
+    def search_read_partner(self, query, params={}):
+        """Takes a mandatory domain filter (possibly empty), and returns the database
+        identifiers of all records matching the filter.
+
+        Args:
+            query: [[['is_company', '=', True], ['customer', '=', True]]], [[]]
+            params: {'offset': 10, 'limit': 5, 'order': 'id asc', 'fields': ['name', 'country_id', 'comment']}
+
+        Returns: A dict.
+        """
+        return self.models.execute_kw(
+            self.database, self.uid, self.password, "res.partner", "search_read", query, params
+        )
 
     def read_partner(self, query, params={}):
         """Takes a list of ids and optionally a list of fields to fetch. By default,
@@ -43,7 +59,7 @@ class Client(object):
         Returns: A dict.
 
         """
-        response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'read', query, params)
+        response = self.models.execute_kw(self.database, self.uid, self.password, "res.partner", "read", query, params)
         clean_response = {}
         for item in response:
             for k, v in item.items():
@@ -61,7 +77,7 @@ class Client(object):
         return self.strip_string_extra_spaces(string).strip()
 
     def strip_string_extra_spaces(self, string):
-        return re.sub("(?:\s)+", ' ', string)
+        return re.sub("(?:\s)+", " ", string)
 
     def list_fields_partner(self):
         """
@@ -73,8 +89,15 @@ class Client(object):
 
         Returns: A dict.
         """
-        response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'fields_get', [],
-                                          {'attributes': ['string', 'help', 'type']})
+        response = self.models.execute_kw(
+            self.database,
+            self.uid,
+            self.password,
+            "res.partner",
+            "fields_get",
+            [],
+            {"attributes": ["string", "help", "type", "readonly", "required", "selection"]},
+        )
         return response
 
     def create_partner(self, data):
@@ -86,5 +109,5 @@ class Client(object):
         Returns:
 
         """
-        response = self.models.execute_kw(self.database, self.uid, self.password, 'res.partner', 'create', data)
+        response = self.models.execute_kw(self.database, self.uid, self.password, "res.partner", "create", data)
         return response

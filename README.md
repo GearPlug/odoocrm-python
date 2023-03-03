@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/version-0.1.2-success) ![](https://img.shields.io/badge/Python-3.8%20|%203.9%20|%203.10%20|%203.11-4B8BBE?logo=python&logoColor=white)
+![](https://img.shields.io/badge/version-0.1.3-success) ![](https://img.shields.io/badge/Python-3.8%20|%203.9%20|%203.10%20|%203.11-4B8BBE?logo=python&logoColor=white)
 # odoocrm-python
 odoocrm is an API wrapper for Odoo CRM written in Python
 ## Installing
@@ -31,6 +31,14 @@ response = client.create_partner([{'name': "John doe",}])
 #### List fields Partner
 ```
 response = client.list_fields_partner()
+```
+#### Search partner Tags
+```
+response = client.search_partner_tag([[['name', '=', 'tag_name']]], {'offset': 10, 'limit': 5})
+```
+#### Create partner Tag (Category)
+```
+response = client.create_partner_tag("tag_name")
 ```
 ## Requirements
 - requests

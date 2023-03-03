@@ -111,3 +111,20 @@ class Client(object):
         """
         response = self.models.execute_kw(self.database, self.uid, self.password, "res.partner", "create", data)
         return response
+
+    def search_partner_tag(self, query, params={}):
+        """Takes a mandatory domain filter (possibly empty '[[]]'), and returns the database
+        identifiers of all records matching the filter.
+        Args:
+            query: [[['is_company', '=', True], ['customer', '=', True]]]
+            params: {'offset': 10, 'limit': 5}
+        Returns: A dict.
+        """
+        response = self.models.execute_kw(
+            self.database, self.uid, self.password, "res.partner.category", "search", query, params
+        )
+        return response
+
+    def create_partner_tag(self, tag: str):
+        tag = {"name": tag}
+        return self.models.execute_kw(self.database, self.uid, self.password, "res.partner.category", "create", [tag])

@@ -9,6 +9,7 @@ def read(fname):
 setup(name='odoocrm-python',
       version='0.1.3',
       description='API wrapper for Odoo CRM written in Python',
+      long_description_content_type='text/markdown',
       long_description=read('README.md'),
       url='https://github.com/GearPlug/odoocrm-python',
       author='Miguel Ferrer',
